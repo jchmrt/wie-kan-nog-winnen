@@ -1,3 +1,6 @@
+import copy
+
+
 class Schedule:
     def __init__(self):
         self.games = []
@@ -13,3 +16,18 @@ class Schedule:
                 games_with.append(game)
 
         return games_with
+
+    def remove_game(self, game):
+        self.games.remove(game)
+
+    def to_string(self):
+        s = ''
+        for game in self.games:
+            s += game[0] + ' - ' + game[1] + '\n'
+        return s
+
+    def copy(self):
+        s = Schedule()
+        for game in self.games:
+            s.games.append((copy.copy(game[0]), copy.copy(game[1])))
+        return s

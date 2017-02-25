@@ -39,6 +39,12 @@ class ScheduleTest(unittest.TestCase):
         games_with = self.schedule.get_games_with(game[0])
         self.assertIn(game, games_with)
 
+    def test_remove_game(self):
+        self.schedule.remove_game(GAMES[2])
+        self.assertNotIn(GAMES[2], self.schedule.games,
+                         """The game should not be in the games
+                         anymore after it has been removed""")
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(ScheduleTest)
