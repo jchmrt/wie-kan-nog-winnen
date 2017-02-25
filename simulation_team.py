@@ -18,4 +18,4 @@ class SimulationTeam:
         win with this Schedule."""
         future_games = schedule.get_games_with(self.team_name)
         max_future_points = len(future_games) * 3
-        return points + max_future_points
+        return self.points + max_future_points
