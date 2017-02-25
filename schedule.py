@@ -5,13 +5,11 @@ class Schedule:
     def add_game(self, team_1, team_2):
         self.games.append((team_1, team_2))
 
-    def find_opponents(self, team):
-        opponents = []
+    def get_games_with(self, team):
+        games_with = []
 
-        for (team_1, team_2) in self.games:
-            if team_1 == team:
-                opponents.append(team_2)
-            else if team_2 == team:
-                opponents.append(team_1)
+        for game in self.games:
+            if team in game:
+                games_with.append(game)
 
-        return opponents
+        return games
