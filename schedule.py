@@ -12,4 +12,4 @@ class Schedule:
             if team in game:
                 games_with.append(game)
 
-        return games
+        return games_with
