@@ -34,7 +34,14 @@ class StatsUpdater:
         self.logo_urls = {}
 
         for team in self.standings_data['standing']:
-            self.logo_urls[team['teamName']] = team['crestURI']
+            # Because of a bug in the dataset we use, the url for the logo of
+            # AZ Alkmaar is not valid. As a temporary fix, we insert our own
+            # correct url here.
+            if team['teamName'] == 'AZ Alkmaar':
+                self.logo_urls['AZ Alkmaar'] = 'https://upload.wikimedia' +\
+                                '.org/wikipedia/commons/e/e0/AZ_Alkmaar.svg'
+            else:
+                self.logo_urls[team['teamName']] = team['crestURI']
 
     def calculate_stats(self):
         simulation_teams = self.create_simulation_teams()
