@@ -4,53 +4,18 @@ class HighestPlaceFinder:
 
     def find_highest_place(self, simulation_team):
         my_team = simulation_team.copy()
-        self.current_state = self.league_state.copy()
-        self.my_max_points = my_team.get_max_points(self.current_state.schedule)
+        current_state = self.league_state.copy()
+        self.my_max_points = my_team.get_max_points(current_state.schedule)
 
-        self.win_games(my_team)
+        self.win_games(my_team, current_state)
 
-        # This stores an upper limit of the highest place we can
-        # attain, if we attain this place, we can stop the search and
-        # return this
-        self.highest_place = 1
-
-        # This part lets all the teams that we are sure we can't surpass anymore
-        # win everything.
-        for team in self.current_state.simulation_teams:
-            if team.points > self.my_max_points:
-                self.win_games(team)
-                # We can't pass this team, so we necessarily end a
-                # place lower.
-                self.highest_place += 1
-
-        # This part lets all the teams who can't win pass our team in the
-        # rankings anymore (when we play perfectly) win from everyone who is
-        # left.
-        found = True
-        while found:
-            found = False
-            for team in self.current_state.simulation_teams:
-                ammount_of_games_with =\
-                    len(self.current_state.schedule.
-                        get_games_with(team.team_name))
-                if (team.get_max_points(self.current_state.schedule) <=
-                    self.my_max_points)\
-                   and (ammount_of_games_with > 0):
-                    self.win_games(team)
-                    found = True
-
-        return self.find_best_place_from(self.current_state)
-
-    def win_games(self, team):
-        games_with = self.current_state.schedule.get_games_with(team.team_name)
-
-        for game in games_with:
-            team.win_game()
-            self.current_state.schedule.remove_game(game)
+        return self.find_best_place_from(current_state)
 
     def find_best_place_from(self, state):
+        self.eliminate_games_with_heuristics(state)
+
         if not state.schedule.games\
-           or self.get_place(state) == self.highest_place:
+           or self.get_place(state) == state.highest_place:
             return self.get_place(state)
 
         game = state.schedule.games[0]
@@ -72,6 +37,45 @@ class HighestPlaceFinder:
         return min([best_place_win_home,
                     best_place_tie,
                     best_place_win_away])
+
+
+    def eliminate_games_with_heuristics(self, state):
+        self.let_unpassable_teams_win(state)
+        self.let_lower_teams_win(state)
+
+    def let_unpassable_teams_win(self, state):
+        # This part lets all the teams that we are sure we can't surpass anymore
+        # win everything.
+        for team in state.simulation_teams:
+            if team.points > self.my_max_points:
+                self.win_games(team, state)
+                # We can't pass this team, so we necessarily end a
+                # place lower.
+                state.highest_place += 1
+
+    def let_lower_teams_win(self, state):
+        # This part lets all the teams who can't pass our team in the
+        # rankings anymore (when we play perfectly) win from everyone who is
+        # left.
+        found = True
+        while found:
+            found = False
+            for team in state.simulation_teams:
+                ammount_of_games_with =\
+                    len(state.schedule.get_games_with(team.team_name))
+
+                if team.get_max_points(state.schedule) <=\
+                   self.my_max_points and (ammount_of_games_with > 0):
+                    self.win_games(team, state)
+                    found = True
+
+
+    def win_games(self, team, state):
+        games_with = state.schedule.get_games_with(team.team_name)
+
+        for game in games_with:
+            team.win_game()
+            state.schedule.remove_game(game)
 
     def get_place(self, state):
         place = 1
