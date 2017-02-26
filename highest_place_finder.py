@@ -5,16 +5,23 @@ class HighestPlaceFinder:
     def find_highest_place(self, simulation_team):
         my_team = simulation_team.copy()
         self.current_state = self.league_state.copy()
-
         self.my_max_points = my_team.get_max_points(self.current_state.schedule)
 
         self.win_games(my_team)
+
+        # This stores an upper limit of the highest place we can
+        # attain, if we attain this place, we can stop the search and
+        # return this
+        self.highest_place = 1
 
         # This part lets all the teams that we are sure we can't surpass anymore
         # win everything.
         for team in self.current_state.simulation_teams:
             if team.points > self.my_max_points:
                 self.win_games(team)
+                # We can't pass this team, so we necessarily end a
+                # place lower.
+                self.highest_place += 1
 
         # This part lets all the teams who can't win pass our team in the
         # rankings anymore (when we play perfectly) win from everyone who is
@@ -42,7 +49,8 @@ class HighestPlaceFinder:
             self.current_state.schedule.remove_game(game)
 
     def find_best_place_from(self, state):
-        if not state.schedule.games:
+        if not state.schedule.games\
+           or self.get_place(state) == self.highest_place:
             return self.get_place(state)
 
         game = state.schedule.games[0]
@@ -68,6 +76,6 @@ class HighestPlaceFinder:
     def get_place(self, state):
         place = 1
         for team in state.simulation_teams:
-            if team.points > self.my_max_points:
+            if team.get_max_points(state.schedule) > self.my_max_points:
                 place += 1
         return place
