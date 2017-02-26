@@ -38,7 +38,8 @@ class StatsUpdater:
 
         for team in simulation_teams:
             place = finder.find_highest_place(team)
-            self.team_places.append((team, place))
+            self.team_places.append({'teamName': team.team_name,
+                                     'bestPlace': place})
             print(team.team_name + ((40 - len(team.team_name)) * ' ') +
                   str(place))
 
@@ -65,9 +66,17 @@ class StatsUpdater:
 
         return schedule
 
+    def save_stats(self):
+        with open('stats.json', 'w') as stats_file:
+            json.dump(self.team_places, stats_file)
+
+    def update_stats(self):
+        self.retrieve_current_competition_state()
+        self.calculate_stats()
+        self.save_stats()
+
 
 competition_id = 433            # Eredivisie
 
 stats_updater = StatsUpdater(competition_id, API_KEY)
-stats_updater.retrieve_current_competition_state()
-stats_updater.calculate_stats()
+stats_updater.update_stats()
