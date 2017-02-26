@@ -22,11 +22,19 @@ class StatsUpdater:
         self.standings_data = self.load_json_from_url(standings_url)
         self.schedule_data = self.load_json_from_url(schedule_url)
 
+        self.get_logo_urls();
+
     def load_json_from_url(self, url):
         json_request = req.Request(url, headers={'X-Auth-Token': self.api_key})
         json_file = req.urlopen(json_request)
         json_str = json_file.read().decode('utf-8')
         return json.loads(json_str)
+
+    def get_logo_urls(self):
+        self.logo_urls = {}
+
+        for team in self.standings_data['standing']:
+            self.logo_urls[team['teamName']] = team['crestURI']
 
     def calculate_stats(self):
         simulation_teams = self.create_simulation_teams()
@@ -38,8 +46,10 @@ class StatsUpdater:
 
         for team in simulation_teams:
             place = finder.find_highest_place(team)
+            logo_url = self.logo_urls[team.team_name]
             self.team_places.append({'teamName': team.team_name,
-                                     'bestPlace': place})
+                                     'bestPlace': place,
+                                     'logoUrl': logo_url})
             print(team.team_name + ((40 - len(team.team_name)) * ' ') +
                   str(place))
 
