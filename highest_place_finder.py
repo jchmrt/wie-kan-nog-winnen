@@ -61,7 +61,7 @@ class HighestPlaceFinder:
         state_win_away.find_simulation_team(game[1]).win_game()
         best_place_win_away = self.find_best_place_from(state_win_away)
 
-        return max([best_place_win_home,
+        return min([best_place_win_home,
                     best_place_tie,
                     best_place_win_away])
 
