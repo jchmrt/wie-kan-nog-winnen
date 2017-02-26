@@ -67,7 +67,7 @@ class StatsUpdater:
         return schedule
 
     def save_stats(self):
-        with open('stats.json', 'w') as stats_file:
+        with open('site/stats.json', 'w') as stats_file:
             json.dump(self.team_places, stats_file)
 
     def update_stats(self):
