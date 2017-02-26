@@ -10,6 +10,15 @@ class HighestPlaceFinder:
 
         self.win_games(my_team)
 
+        # This part lets all the teams that we are sure we can't surpass anymore
+        # win everything.
+        for team in self.current_state.simulation_teams:
+            if team.points > self.my_max_points:
+                self.win_games(team)
+
+        # This part lets all the teams who can't win pass our team in the
+        # rankings anymore (when we play perfectly) win from everyone who is
+        # left.
         found = True
         while found:
             found = False
