@@ -47,6 +47,10 @@ tr:hover {
     background-color: #eee;
 }
 
+thead tr:hover {
+    background-color: #fff;
+}
+
 tr th:nth-child(1) {
     text-align: left;
 }
