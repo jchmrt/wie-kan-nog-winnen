@@ -1,14 +1,19 @@
 body {
-    background-color: #f2f2f2;
-    font-family: sans;
+    background-color: #fff;
+    font-family: "sans-serif";
+    font-size: 16px;
+    color: #000;
 }
 
 h1 {
     text-align: center;
+    color: #a06;
+    font-size: 48px;
 }
 
 section#winners {
     text-align: center;
+    padding: 16px;
 }
 
 .logos {
@@ -22,14 +27,51 @@ section#winners {
 
 table {
     margin: auto;
-}
-
-td {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 16px;
+    width: 100%;
+    max-width: 700px;
+    border: 0px;
 }
 
 th {
-    padding-left: 30px;
-    padding-right: 30px;
+    color: #a06;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+th, td {
+    padding: 8px;
+}
+
+tr:hover {
+    background-color: #eee;
+}
+
+tr th:nth-child(1) {
+    text-align: left;
+}
+
+tr th:nth-child(2) {
+    text-align: right;
+}
+
+tr td:nth-child(1) {
+    text-align: left;
+}
+
+tr td:nth-child(2) {
+    text-align: right;
+    font-weight: bold;
+}
+
+.place-1 {
+    background-color: #e8ffe8;
+}
+
+.place-2 {
+    background-color: #fff6d4;
+}
+
+.place-3 {
+    background-color: #ffeaea;
 }
