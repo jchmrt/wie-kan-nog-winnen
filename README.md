@@ -2,7 +2,7 @@
 
 Soms staat je favoriete club er niet zo goed voor in de Eredivisie en
 lijkt het alsof alles verloren is, op dat soort momenten is het
-belangrijk je te herrinneren wat nog kan gebeuren. Daarom verteld
+belangrijk je te herinneren wat nog kan gebeuren. Daarom verteld
 wie-kan-nog-winnnen hoe hoog elke club dit seizoen nog kan eindigen
 (mocht alles perfect in hun voordeel gaan)
 
