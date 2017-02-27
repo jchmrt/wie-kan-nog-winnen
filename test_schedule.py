@@ -45,6 +45,24 @@ class ScheduleTest(unittest.TestCase):
                          """The game should not be in the games
                          anymore after it has been removed""")
 
+    def test_empty_to_string(self):
+        empty_schedule = schedule_module.Schedule()
+        self.assertEquals('', empty_schedule.to_string())
+
+    def test_filled_to_string(self):
+        self.assertEquals("""team1 - fc soccer
+team1 - $$FC^%weird)'ch\"aracters
+fc soccer - $$FC^%weird)'ch\"aracters
+$$FC^%weird)'ch\"aracters - team1
+""", self.schedule.to_string())
+
+    def test_copy(self):
+        copy = self.schedule.copy()
+        copy.add_game(TEAMS[0], TEAMS[3])
+
+        self.assertEquals([], self.schedule.get_games_with(TEAMS[3]))
+        self.assertEquals([(TEAMS[0], TEAMS[3])], copy.get_games_with(TEAMS[3]))
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(ScheduleTest)
