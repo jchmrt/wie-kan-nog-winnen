@@ -2,7 +2,7 @@ import copy
 
 
 class LeagueState:
-    def __init__(self, schedule, simulation_teams, highest_place = 1):
+    def __init__(self, schedule, simulation_teams, highest_place=1):
         self.schedule = schedule
         self.simulation_teams = simulation_teams
         # Stores the highest place the team can win in this state,

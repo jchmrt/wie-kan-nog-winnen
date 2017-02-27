@@ -61,7 +61,8 @@ $$FC^%weird)'ch\"aracters - team1
         copy.add_game(TEAMS[0], TEAMS[3])
 
         self.assertEquals([], self.schedule.get_games_with(TEAMS[3]))
-        self.assertEquals([(TEAMS[0], TEAMS[3])], copy.get_games_with(TEAMS[3]))
+        self.assertEquals([(TEAMS[0], TEAMS[3])],
+                          copy.get_games_with(TEAMS[3]))
 
 
 if __name__ == '__main__':

@@ -38,14 +38,13 @@ class HighestPlaceFinder:
                     best_place_tie,
                     best_place_win_away])
 
-
     def eliminate_games_with_heuristics(self, state):
         self.let_unpassable_teams_win(state)
         self.let_lower_teams_win(state)
 
     def let_unpassable_teams_win(self, state):
-        # This part lets all the teams that we are sure we can't surpass anymore
-        # win everything.
+        # This part lets all the teams that we are sure we can't
+        # surpass anymore win everything.
         for team in state.simulation_teams:
             if team.points > self.my_max_points:
                 self.win_games(team, state)
@@ -68,7 +67,6 @@ class HighestPlaceFinder:
                    self.my_max_points and (ammount_of_games_with > 0):
                     self.win_games(team, state)
                     found = True
-
 
     def win_games(self, team, state):
         games_with = state.schedule.get_games_with(team.team_name)

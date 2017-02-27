@@ -22,7 +22,7 @@ class StatsUpdater:
         self.standings_data = self.load_json_from_url(standings_url)
         self.schedule_data = self.load_json_from_url(schedule_url)
 
-        self.get_logo_urls();
+        self.get_logo_urls()
 
     def load_json_from_url(self, url):
         json_request = req.Request(url, headers={'X-Auth-Token': self.api_key})
@@ -42,6 +42,13 @@ class StatsUpdater:
                                 '.org/wikipedia/commons/e/e0/AZ_Alkmaar.svg'
             else:
                 self.logo_urls[team['teamName']] = team['crestURI']
+
+            # Replace all http URLs with https:
+            if self.logo_urls[team['teamName']][:4] == 'http' and\
+               self.logo_urls[team['teamName']][:5] != 'https':
+                self.logo_urls[team['teamName']] =\
+                    ('https' +
+                     self.logo_urls[team['teamName']][4:])
 
     def calculate_stats(self):
         simulation_teams = self.create_simulation_teams()
