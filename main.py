@@ -119,7 +119,7 @@ class StatsUpdater:
         self.save_stats()
 
 
-competition_id = 433            # Eredivisie
+competition_id = 449            # Eredivisie
 
 stats_updater = StatsUpdater(competition_id, API_KEY)
 stats_updater.update_stats()
