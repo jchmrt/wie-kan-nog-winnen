@@ -56,9 +56,9 @@ class StatsUpdater:
             # Because of a bug in the dataset we use, the url for the logo of
             # AZ Alkmaar is not valid. As a temporary fix, we insert our own
             # correct url here.
-            if team['teamName'] == 'AZ Alkmaar':
-                self.logo_urls['AZ Alkmaar'] = 'https://upload.wikimedia' +\
-                                '.org/wikipedia/commons/e/e0/AZ_Alkmaar.svg'
+            if team['teamName'] == 'NAC Breda':
+                self.logo_urls['NAC Breda'] = 'https://upload.wikimedia' +\
+                                '.org/wikipedia/commons/c/c9/Logo_NAC_Breda.png'
             else:
                 self.logo_urls[team['teamName']] = team['crestURI']
 
