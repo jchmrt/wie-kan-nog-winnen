@@ -19,10 +19,14 @@
 
 var insertStat = function (stat) {
     var row = $("<tr>");
+    row.append($("<td>").text(stat.currentPlace + "."));
     row.append($("<td>").text(stat.teamName));
-    var place = $("<td>").text(stat.bestPlace);
-    row.addClass("place-" + stat.bestPlace);
-    row.append(place);
+    var bestPlace = $("<td>").text(stat.bestPlace);
+    row.addClass("best-place-" + stat.bestPlace);
+    row.append(bestPlace);
+    var worstPlace = $("<td>").text(stat.worstPlace);
+    worstPlace.addClass("worst-place-" + stat.worstPlace);
+    row.append(worstPlace);
     $("#places-table").append(row);
 };
 
@@ -33,10 +37,22 @@ var insertWinner = function (winner) {
     $("#winners div").append(img);
 };
 
+var insertLoser = function (loser) {
+    var img = $("<img>").attr("alt", loser.teamName);
+    img.addClass("losing-team");
+    img.attr("src", loser.logoUrl);
+    $("#losers div").append(img);
+};
+
+
 $.getJSON("/stats.json", function (stats) {
     stats.forEach(insertStat);
     var winners = stats.filter(function (stat) {
         return stat.bestPlace == 1;
     });
     winners.forEach(insertWinner);
+    var losers = stats.filter(function (stat) {
+        return stat.worstPlace >= 16;
+    });
+    losers.forEach(insertLoser);
 });

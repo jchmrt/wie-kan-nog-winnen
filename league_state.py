@@ -21,12 +21,13 @@ import copy
 
 
 class LeagueState:
-    def __init__(self, schedule, simulation_teams, highest_place=1):
+    def __init__(self, schedule, simulation_teams, highest_place=1, lowest_place=18):
         self.schedule = schedule
         self.simulation_teams = simulation_teams
         # Stores the highest place the team can win in this state,
         # used for premature exits
         self.highest_place = highest_place
+        self.lowest_place = lowest_place
 
     def copy(self):
         simulation_teams_copy = []

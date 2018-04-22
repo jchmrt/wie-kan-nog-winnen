@@ -22,6 +22,7 @@ import json
 import simulation_team
 import schedule as s
 import highest_place_finder
+import lowest_place_finder
 import league_state
 from key import API_KEY
 
@@ -74,17 +75,23 @@ class StatsUpdater:
         schedule = self.create_schedule()
 
         state = league_state.LeagueState(schedule, simulation_teams)
-        finder = highest_place_finder.HighestPlaceFinder(state)
+        low_finder = lowest_place_finder.LowestPlaceFinder(state.copy())
+        high_finder = highest_place_finder.HighestPlaceFinder(state.copy())
         self.team_places = []
 
         for team in simulation_teams:
-            place = finder.find_highest_place(team)
+            highest_place = high_finder.find_highest_place(team)
+            lowest_place = low_finder.find_lowest_place(team)
             logo_url = self.logo_urls[team.team_name]
             self.team_places.append({'teamName': team.team_name,
-                                     'bestPlace': place,
+                                     'bestPlace': highest_place,
+                                     'worstPlace': lowest_place,
+                                     'currentPlace': team.current_place,
                                      'logoUrl': logo_url})
-            print(team.team_name + ((40 - len(team.team_name)) * ' ') +
-                  str(place))
+            print(str(team.current_place) + ": " +
+                  ((4 - len(str(team.current_place))) * ' ') +
+                  team.team_name + ((40 - len(team.team_name)) * ' ') +
+                  str(highest_place) + ' - ' + str(lowest_place))
 
     def create_simulation_teams(self):
         teams_data = self.standings_data['standing']
@@ -93,7 +100,8 @@ class StatsUpdater:
         for team_data in teams_data:
             simulation_teams.append(
                 simulation_team.SimulationTeam(team_data['teamName'],
-                                               team_data['points']))
+                                               team_data['points'],
+                                               team_data['position']))
 
         return simulation_teams
 

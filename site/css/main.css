@@ -30,7 +30,13 @@ h1 {
     font-size: 48px;
 }
 
-section#winners {
+h2 {
+    text-align: center;
+    color: #a06;
+    font-size: 36px;
+}
+
+section#winners, section#losers {
     text-align: center;
     padding: 16px;
 }
@@ -71,31 +77,42 @@ thead tr:hover {
     background-color: #fff;
 }
 
-tr th:nth-child(1) {
+tr th:nth-child(2) {
     text-align: left;
 }
 
-tr th:nth-child(2) {
+tr th:nth-child(3), tr th:nth-child(4) {
     text-align: right;
 }
 
-tr td:nth-child(1) {
+tr td:nth-child(2) {
     text-align: left;
 }
 
-tr td:nth-child(2) {
+tr td:nth-child(3), tr td:nth-child(4) {
     text-align: right;
     font-weight: bold;
 }
 
-.place-1 {
+
+.best-place-1 {
     background-color: #e8ffe8;
 }
 
-.place-2 {
+.best-place-2 {
     background-color: #fff6d4;
 }
 
-.place-3 {
+.best-place-3 {
     background-color: #ffeaea;
+}
+
+.worst-place-16, .worst-place-17 {
+    color: #c60;
+    font-weight: bold;
+}
+
+.worst-place-18 {
+    color: #a00;
+    font-weight: bold;
 }

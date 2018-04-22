@@ -25,9 +25,10 @@ class SimulationTeam:
     # the team name (to identify the team) and the current score the
     # team has in the simulation.
 
-    def __init__(self, team_name, points):
+    def __init__(self, team_name, points, current_place):
         self.team_name = team_name
         self.points = points
+        self.current_place = current_place
 
     def win_game(self):
         self.points += 3
@@ -40,8 +41,10 @@ class SimulationTeam:
         win with this Schedule."""
         future_games = schedule.get_games_with(self.team_name)
         max_future_points = len(future_games) * 3
-        return self.points + max_future_points
+        max_points = max_future_points + self.points
+        return max_points
+
 
     def copy(self):
-        t = SimulationTeam(copy.copy(self.team_name), copy.copy(self.points))
+        t = SimulationTeam(self.team_name, copy.copy(self.points), self.current_place)
         return t
