@@ -33,16 +33,28 @@ class StatsUpdater:
         self.api_key = api_key
 
     def retrieve_current_competition_state(self):
-        base_url = 'http://api.football-data.org/v1/'
+        base_url = 'http://api.football-data.org/v2/'
         competition_url = (base_url + 'competitions/' +
                            str(self.competition_id) + '/')
-        standings_url = competition_url + 'leagueTable'
-        schedule_url = competition_url + 'fixtures'
+        standings_url = competition_url + 'standings'
+        schedule_url = competition_url + 'matches'
+        teams_url = competition_url + 'teams'
 
-        self.standings_data = self.load_json_from_url(standings_url)
+        self.standings_data = self.load_standings_data(standings_url)
         self.schedule_data = self.load_json_from_url(schedule_url)
+        self.teams_data = self.load_json_from_url(teams_url)
 
         self.get_logo_urls()
+
+    def load_standings_data(self, standings_url):
+        raw_data = self.load_json_from_url(standings_url)
+        all_standings = raw_data['standings']
+
+        for standing in all_standings:
+            if standing['type'] == 'TOTAL':
+                return standing['table']
+
+        raise ValueError('No TOTAL standings table found')
 
     def load_json_from_url(self, url):
         json_request = req.Request(url, headers={'X-Auth-Token': self.api_key})
@@ -53,22 +65,22 @@ class StatsUpdater:
     def get_logo_urls(self):
         self.logo_urls = {}
 
-        for team in self.standings_data['standing']:
+        for team in self.teams_data['teams']:
             # Because of a bug in the dataset we use, the url for the logo of
-            # AZ Alkmaar is not valid. As a temporary fix, we insert our own
+            # VVV Venlo is not valid. As a temporary fix, we insert our own
             # correct url here.
-            if team['teamName'] == 'NAC Breda':
-                self.logo_urls['NAC Breda'] = 'https://upload.wikimedia' +\
-                                '.org/wikipedia/commons/c/c9/Logo_NAC_Breda.png'
+            if team['name'] == 'VVV Venlo':
+                self.logo_urls['VVV Venlo'] = 'https://upload.wikimedia' +\
+                                '.org/wikipedia/en/6/60/VVV-Venlo_logo.svg'
             else:
-                self.logo_urls[team['teamName']] = team['crestURI']
+                self.logo_urls[team['name']] = team['crestUrl']
 
             # Replace all http URLs with https:
-            if self.logo_urls[team['teamName']][:4] == 'http' and\
-               self.logo_urls[team['teamName']][:5] != 'https':
-                self.logo_urls[team['teamName']] =\
-                    ('https' +
-                     self.logo_urls[team['teamName']][4:])
+            # if self.logo_urls[team['name']][:4] == 'http' and\
+            #    self.logo_urls[team['name']][:5] != 'https':
+            #     self.logo_urls[team['name']] =\
+            #         ('https' +
+            #          self.logo_urls[team['name']][4:])
 
     def calculate_stats(self):
         simulation_teams = self.create_simulation_teams()
@@ -94,26 +106,24 @@ class StatsUpdater:
                   str(highest_place) + ' - ' + str(lowest_place))
 
     def create_simulation_teams(self):
-        teams_data = self.standings_data['standing']
         simulation_teams = []
 
-        for team_data in teams_data:
+        for standing in self.standings_data:
             simulation_teams.append(
-                simulation_team.SimulationTeam(team_data['teamName'],
-                                               team_data['points'],
-                                               team_data['position']))
+                simulation_team.SimulationTeam(standing['team']['name'],
+                                               standing['points'],
+                                               standing['position']))
 
         return simulation_teams
 
     def create_schedule(self):
-        games_data = self.schedule_data['fixtures']
+        games_data = self.schedule_data['matches']
         schedule = s.Schedule()
 
         for game_data in games_data:
-            if game_data['status'] == 'TIMED' or (game_data['status'] ==
-                                                  'SCHEDULED'):
-                schedule.add_game(game_data['homeTeamName'],
-                                  game_data['awayTeamName'])
+            if game_data['status'] != 'FINISHED':
+                schedule.add_game(game_data['homeTeam']['name'],
+                                  game_data['awayTeam']['name'])
 
         return schedule
 
@@ -127,7 +137,7 @@ class StatsUpdater:
         self.save_stats()
 
 
-competition_id = 449            # Eredivisie
+competition_id = 2003            # Eredivisie
 
 stats_updater = StatsUpdater(competition_id, API_KEY)
 stats_updater.update_stats()
