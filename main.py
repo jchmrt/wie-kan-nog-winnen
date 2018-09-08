@@ -70,8 +70,17 @@ class StatsUpdater:
             # VVV Venlo is not valid. As a temporary fix, we insert our own
             # correct url here.
             if team['name'] == 'VVV Venlo':
-                self.logo_urls['VVV Venlo'] = 'https://upload.wikimedia' +\
-                                '.org/wikipedia/en/6/60/VVV-Venlo_logo.svg'
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/en/6/60/VVV-Venlo_logo.svg'
+            elif team['name'] == 'VBV De Graafschap':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/commons/2/28/VBV_De_Graafschap_Doetinchem.svg'
+            elif team['name'] == 'FC Emmen':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/en/8/83/FC_Emmen_logo.svg'
+            elif team['name'] == 'Fortuna Sittard':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/en/2/2d/Fortuna_Sittard_logo.svg'
             else:
                 self.logo_urls[team['name']] = team['crestUrl']
 
