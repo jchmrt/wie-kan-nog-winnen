@@ -81,6 +81,15 @@ class StatsUpdater:
             elif team['name'] == 'Fortuna Sittard':
                 self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
                                 'wikipedia/en/2/2d/Fortuna_Sittard_logo.svg'
+            elif team['name'] == 'AZ':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/commons/e/e0/AZ_Alkmaar.svg'
+            elif team['name'] == 'NAC Breda':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/commons/c/c9/Logo_NAC_Breda.png'
+            elif team['name'] == 'ADO Den Haag':
+                self.logo_urls[team['name']] = 'https://upload.wikimedia.org/' +\
+                                'wikipedia/en/a/ad/ADO_Den_Haag_logo.svg'
             else:
                 self.logo_urls[team['name']] = team['crestUrl']
 
